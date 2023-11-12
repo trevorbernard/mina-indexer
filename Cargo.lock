@@ -1677,6 +1677,7 @@ dependencies = [
  "bs58 0.5.0",
  "bytesize",
  "clap",
+ "crossbeam-channel",
  "ctrlc",
  "futures",
  "futures-util",
@@ -1685,6 +1686,7 @@ dependencies = [
  "interprocess",
  "mina-serialization-types",
  "mina-signer",
+ "notify 6.1.1",
  "oneshot",
  "rocksdb",
  "rust_decimal",
@@ -1857,6 +1859,25 @@ dependencies = [
  "mio",
  "walkdir",
  "windows-sys 0.45.0",
+]
+
+[[package]]
+name = "notify"
+version = "6.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6205bd8bb1e454ad2e27422015fb5e4f2bcc7e08fa8f27058670d208324a4d2d"
+dependencies = [
+ "bitflags 2.4.1",
+ "crossbeam-channel",
+ "filetime",
+ "fsevent-sys",
+ "inotify",
+ "kqueue",
+ "libc",
+ "log",
+ "mio",
+ "walkdir",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
@@ -3149,7 +3170,7 @@ dependencies = [
  "miette",
  "nix 0.26.4",
  "normalize-path",
- "notify",
+ "notify 5.2.0",
  "once_cell",
  "project-origins",
  "thiserror",
@@ -3166,7 +3187,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01603bbe02fd75918f010dadad456d47eda14fb8fdcab276b0b4b8362f142ae3"
 dependencies = [
  "nix 0.26.4",
- "notify",
+ "notify 5.2.0",
  "watchexec-signals",
 ]
 

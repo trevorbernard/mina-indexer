@@ -17,9 +17,9 @@ use mina_serialization_types::{
 use serde::{Deserialize, Serialize};
 
 pub struct BlockLogContents {
-    pub(crate) state_hash: String,
-    pub(crate) blockchain_length: Option<u32>,
-    pub(crate) contents: Vec<u8>,
+    pub state_hash: String,
+    pub blockchain_length: Option<u32>,
+    pub contents: Vec<u8>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
