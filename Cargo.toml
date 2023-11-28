@@ -47,6 +47,12 @@ blake2 = "0.10.6"
 ctrlc = "3.4.0"
 serde_yaml = "0.9.25"
 oneshot = "0.1.5"
+crossbeam-channel = "0.5.8"
+notify = "6.1.1"
+
+[dev-dependencies]
+quickcheck = "1.0.3"
+quickcheck_macros = "1.0.0"
 
 [dependencies.tokio]
 version = "1.25.0"

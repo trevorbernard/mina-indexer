@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use self::precomputed::{BlockLogContents, PrecomputedBlock};
 
+pub mod ingestion;
 pub mod parser;
 pub mod precomputed;
 pub mod signed_command;
