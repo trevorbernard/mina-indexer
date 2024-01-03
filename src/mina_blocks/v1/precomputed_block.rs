@@ -5,11 +5,26 @@ use serde_json::Value;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PrecomputedBlock {
-    pub scheduled_time: Value,
+    #[serde(deserialize_with = "from_str")]
+    pub scheduled_time: u64,
     pub protocol_state: ProtocolState,
+    #[serde(skip_deserializing)]
     pub protocol_state_proof: String,
     pub staged_ledger_diff: StagedLedgerDiff,
+    #[serde(skip_deserializing)]
     pub delta_transition_chain_proof: DeltaTransitionChainProof,
+}
+
+fn from_str<'de, T, D>(de: D) -> Result<T, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Display,
+{
+    use serde::Deserialize;
+    Ok(String::deserialize(de)?
+        .parse()
+        .map_err(serde::de::Error::custom)?)
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -116,6 +131,7 @@ pub struct Diff {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CompletedWork {
     pub fee: String,
+    #[serde(skip_deserializing)]
     pub proofs: Option<Value>, //(String, Proofs, Proofs),
     pub prover: String,
 }
