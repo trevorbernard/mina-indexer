@@ -374,8 +374,9 @@ pub struct InternalCommandBalances {
 
 pub fn parse_file<P: AsRef<Path>>(filename: P) -> anyhow::Result<PrecomputedBlock> {
     let data = std::fs::read(filename)?;
-    let str = String::from_utf8_lossy(&data);
-    let block: PrecomputedBlock = serde_json::from_str(&str)?;
+    let block = serde_json::from_slice(&data)?;
+    // let str = String::from_utf8_lossy(&data);
+    // let block: PrecomputedBlock = serde_json::from_str(&str)?;
     Ok(block)
 }
 
