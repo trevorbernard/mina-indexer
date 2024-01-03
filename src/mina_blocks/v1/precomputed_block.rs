@@ -5,12 +5,15 @@ use serde_json::Value;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PrecomputedBlock {
-    pub scheduled_time: String,
+    pub scheduled_time: Value,
     pub protocol_state: ProtocolState,
     pub protocol_state_proof: String,
     pub staged_ledger_diff: StagedLedgerDiff,
-    pub delta_transition_chain_proof: (String, Vec<String>),
+    pub delta_transition_chain_proof: DeltaTransitionChainProof,
 }
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct DeltaTransitionChainProof(String, Vec<String>);
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ProtocolState {
