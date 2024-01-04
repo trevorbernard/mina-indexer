@@ -1,32 +1,29 @@
 use std::path::Path;
 
-use serde_derive::{Serialize, Deserialize};
+use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 
+use super::common::from_str;
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+///The precomputed block contains computed transaction proofs, enabling more efficient processing and verification within Mina's succinct blockchain.
 pub struct PrecomputedBlock {
     #[serde(deserialize_with = "from_str")]
+    /// The specific time at which the block is scheduled to be produced in the blockchain
     pub scheduled_time: u64,
+    ///
     pub protocol_state: ProtocolState,
+    ///    
     #[serde(skip_deserializing)]
     pub protocol_state_proof: String,
+    /// The staged ledger diff represents the set of changes applied to the blockchain's ledger state between two consecutive blocks. It encapsulates transactions, fees, and other modifications that update the ledger from its previous state to the current one as reflected in the new block.
     pub staged_ledger_diff: StagedLedgerDiff,
+    /// The proof proves that the block was produced within the allotted slot time.
     #[serde(skip_deserializing)]
     pub delta_transition_chain_proof: DeltaTransitionChainProof,
 }
 
-fn from_str<'de, T, D>(de: D) -> Result<T, D::Error>
-where
-    D: serde::Deserializer<'de>,
-    T: std::str::FromStr,
-    <T as std::str::FromStr>::Err: std::fmt::Display,
-{
-    use serde::Deserialize;
-    Ok(String::deserialize(de)?
-        .parse()
-        .map_err(serde::de::Error::custom)?)
-}
-
+/// The delta transition chain proof proves that the block was produced within the allotted slot time.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct DeltaTransitionChainProof(String, Vec<String>);
 
@@ -223,18 +220,10 @@ pub struct Plonk {
     pub zeta: (String, Vec<i64>),
 }
 
-
-
-
-
-
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BulletproofChallenges {
     pub prechallenge: (String, Vec<i64>),
 }
-
-
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct MeOnly {
@@ -281,10 +270,6 @@ pub struct TComm {
     pub unshifted: Vec<(String, Vec<String>)>,
     pub shifted: (String, Vec<String>),
 }
-
-
-
-
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Openings {
