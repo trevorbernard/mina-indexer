@@ -3,7 +3,7 @@ use std::path::Path;
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 
-use super::common::from_str;
+use super::{common::from_str, protocol_state::ProtocolState};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 ///The precomputed block contains computed transaction proofs, enabling more efficient processing and verification within Mina's succinct blockchain.
@@ -26,20 +26,6 @@ pub struct PrecomputedBlock {
 /// The delta transition chain proof proves that the block was produced within the allotted slot time.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct DeltaTransitionChainProof(String, Vec<String>);
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct ProtocolState {
-    pub previous_state_hash: String,
-    pub body: Body,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Body {
-    pub genesis_state_hash: String,
-    pub blockchain_state: BlockchainState,
-    pub consensus_state: ConsensusState,
-    pub constants: Constants,
-}
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BlockchainState {
