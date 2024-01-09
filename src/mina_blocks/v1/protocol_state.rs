@@ -3,8 +3,8 @@ use serde_derive::{Deserialize, Serialize};
 use super::precomputed_block::{BlockchainState, ConsensusState, Constants};
 
 /// The Protocol State represents a snapshot of the blockchain's current state,
-///  including consensus information, network parameters, and references to
-///  previous blocks.
+/// including consensus information, network parameters, and references to
+/// previous blocks.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ProtocolState {
     /// Represents the unique cryptographic hash of the protocol state
