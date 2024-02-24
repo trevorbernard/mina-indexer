@@ -88,7 +88,7 @@ fn calculate_summary(
             .inner()
             .hash,
     )
-        .0;
+    .0;
 
     let previous_state_hash = best_tip.previous_state_hash().0;
     let slot = best_tip
@@ -111,7 +111,7 @@ fn calculate_summary(
             .inner()
             .snarked_ledger_hash,
     )
-        .0;
+    .0;
     let staged_ledger_hash = LedgerHash::from_hashv1(
         best_tip
             .protocol_state
@@ -129,7 +129,7 @@ fn calculate_summary(
             .inner()
             .ledger_hash,
     )
-        .0;
+    .0;
     let staking_epoch_ledger_hash = LedgerHash::from_hashv1(
         best_tip
             .consensus_state()
@@ -141,7 +141,7 @@ fn calculate_summary(
             .inner()
             .hash,
     )
-        .0;
+    .0;
     let state_hash = best_tip.state_hash.clone();
     let total_currency_u64 = best_tip.consensus_state().total_currency.inner().inner();
     let locked_currency_u64 = locked_balance.map(|a| a.0).unwrap_or(0);

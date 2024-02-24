@@ -73,7 +73,7 @@ pub trait ReadBinProtExt: io::Read {
                 T::from_u8(byte0)
             }
         }
-            .ok_or(Error::DestinationIntegerOverflow)
+        .ok_or(Error::DestinationIntegerOverflow)
     }
 
     /// Read a variable length natural integer
@@ -102,7 +102,7 @@ pub trait ReadBinProtExt: io::Read {
                 T::from_u8(byte0)
             }
         }
-            .ok_or(Error::DestinationIntegerOverflow)
+        .ok_or(Error::DestinationIntegerOverflow)
     }
 
     /// Read the index of a variant

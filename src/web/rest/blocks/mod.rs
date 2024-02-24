@@ -1,3 +1,5 @@
+pub mod blocks;
+
 use std::sync::Arc;
 
 use actix_web::{
@@ -6,20 +8,17 @@ use actix_web::{
     web::{self, Data},
     HttpResponse,
 };
-use serde::Deserialize;
 
 use crate::{
-    block::{precomputed::PrecomputedBlock, store::BlockStore},
+    block::{store::BlockStore, BlockHash},
     store::IndexerStore,
+    web::rest::blocks::blocks::{Block, Blocks},
 };
+use serde::Deserialize;
 
 #[derive(Deserialize)]
 struct Params {
     limit: Option<u32>,
-}
-
-fn get_limit(limit: Option<u32>) -> u32 {
-    limit.map(|value| value.min(10)).unwrap_or(1)
 }
 
 #[get("/blocks")]
@@ -28,27 +27,29 @@ pub async fn get_blocks(
     params: web::Query<Params>,
 ) -> HttpResponse {
     let db = store.as_ref();
-    let limit = get_limit(params.limit);
+    let limit = params.limit.map(|value| value.min(10)).unwrap_or(1);
 
     if let Ok(Some(best_tip)) = db.get_best_block() {
-        let mut best_chain: Box<Vec<PrecomputedBlock>> = Box::new(vec![best_tip.clone()]);
-        let mut counter = 1;
         let mut parent_state_hash = best_tip.previous_state_hash();
+        let rest_block: Block = Block::from(best_tip);
+        let mut best_chain: Vec<Block> = vec![rest_block];
+        let mut counter = 1;
 
         loop {
             if counter == limit {
                 break;
             }
-            if let Ok(Some(block)) = db.get_block(&parent_state_hash) {
-                parent_state_hash = block.previous_state_hash();
-                best_chain.push(block);
+            if let Ok(Some(pcb)) = db.get_block(&parent_state_hash) {
+                parent_state_hash = pcb.previous_state_hash();
+                best_chain.push(Block::from(pcb));
             } else {
                 // No parent
                 break;
             }
             counter += 1;
         }
-        let body = serde_json::to_string(&best_chain).unwrap();
+        let blocks = Blocks { blocks: best_chain };
+        let body = serde_json::to_string_pretty(&blocks).unwrap();
         return HttpResponse::Ok()
             .content_type(ContentType::json())
             .body(body);
@@ -62,8 +63,9 @@ pub async fn get_block(
     state_hash: web::Path<String>,
 ) -> HttpResponse {
     let db = store.as_ref();
-    if let Ok(Some(ref block)) = db.get_block(&state_hash.clone().into()) {
-        let body = serde_json::to_string(block).unwrap();
+    if let Ok(Some(pcb)) = db.get_block(&BlockHash::from(state_hash.clone())) {
+        let rest_block: Block = Block::from(pcb);
+        let body = serde_json::to_string_pretty(&rest_block).unwrap();
         return HttpResponse::Ok()
             .content_type(ContentType::json())
             .body(body);
